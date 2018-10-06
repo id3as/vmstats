@@ -2,4 +2,4 @@
 
 -type collect_type() :: counter | gauge | timing.
 
--callback collect(Type :: collect_type(), Key :: iodata(), Value :: term()) -> ok.
+-callback collect(Measurement :: collect_type(), Fields :: list({string(), term()}), Tags :: list({string(), string()})) -> ok.
