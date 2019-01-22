@@ -208,7 +208,7 @@ collect_run_queue(Acc, #state{key = MeasurementPrefix,
 
   {_, Acc2} = lists:foldl(fun(RunQueue, {N, InnerAcc}) ->
 
-                              Fields = [{sched, RunQueue}],
+                              Fields = [{value, RunQueue}],
                               Tag = if
                                       N < SchedulerCount ->
                                         {sched, N};
@@ -268,8 +268,8 @@ collect_memory_stats(MeasurementPrefix, Tags, MemoryMetrics, Acc) ->
 
 collect_reductions(MeasurementPrefix, Tags, Acc) ->
   %% Reductions across the VM, excluding current time slice, already incremental
-  {_, Reds} = erlang:statistics(reductions),
-  [{[MeasurementPrefix, "reductions"], [{"value", Reds}], Tags} | Acc].
+  {TotalReductions, _SinceLastCall} = erlang:statistics(reductions),
+  [{[MeasurementPrefix, "reductions"], [{"value", TotalReductions}], Tags} | Acc].
 
 collect_io_stats(Acc, #state{key = MeasurementPrefix,
                              tags = Tags}) ->
@@ -360,7 +360,7 @@ collect_allocator_metrics(MeasurementPrefix, Tags, Acc) ->
                                            {"instance", Instance},
                                            {"carrier_type", CarrierType} | Tags],
 
-                                  [{[MeasurementPrefix, "carrier"], Fields, Tags2} | InnerInnerAcc];
+                                  [{[MeasurementPrefix, "allocators"], Fields, Tags2} | InnerInnerAcc];
                                  (_, InnerInnerAcc) ->
                                   InnerInnerAcc
                               end,
