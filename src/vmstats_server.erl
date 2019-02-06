@@ -279,7 +279,7 @@ collect_io_stats(Acc, #state{key = MeasurementPrefix,
   Fields = [{"bytes_in", In},
             {"bytes_out", Out}],
 
-  [{[MeasurementPrefix, "io"], Fields, Tags} | Acc].
+  [{[MeasurementPrefix, "port_io"], Fields, Tags} | Acc].
 
 collect_gc_stats(Acc, #state{key = MeasurementPrefix,
                              tags = Tags,
